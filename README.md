@@ -30,3 +30,5 @@ If a claim can't be verified, it's dropped or rewritten without the false precis
 | [firecrawl-cheatsheet.md](firecrawl-cheatsheet.md) | Reference for which Firecrawl tool to use for discovery vs. scraping, and which sources to skip |
 | [CLAUDE.md](CLAUDE.md) | Project brief and the mandatory verification rule |
 | [WAT Claude.md](WAT%20Claude.md) | The general Workflows/Agents/Tools framework this project runs on |
+| [results/medium_content_dossier.html](results/medium_content_dossier.html) / [.pdf](results/medium_content_dossier.pdf) | A visual walkthrough of one real run: screenshots of the pages the workflow touches (homepage, topic hub, article), Medium's colour/type system, a map of its site structure, and the actual sourcing output below |
+| [results/medium_top_performing_content.xlsx](results/medium_top_performing_content.xlsx) | The raw sourcing-stage output — 30 candidates pulled from a topic hub, ranked by claps, with paywall status and whatever sources each article itself cites. **Not yet independently verified** — that's the next step per the workflow above. |
