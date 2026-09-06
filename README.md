@@ -1,34 +1,29 @@
-# Sourcing & Verifying Research from Medium
-
-A small AI-agent workflow for finding well-written, on-topic source material on Medium, pulling out the ideas and evidence worth citing, and verifying every specific claim before it's used — built for a weekly newsletter's research process, but the pattern generalizes to any content-from-Medium sourcing task.
-
-## Why this exists
-
-Medium is a mixed-quality platform: some writers cite real research properly, others fabricate or misattribute statistics for engagement. Scraping it for source material is only useful if there's a hard verification gate before anything gets quoted or cited downstream.
+A Firecrawl-based automation system developed for a personal newsletter brand to source and verify research from Medium before it's cited in an issue. The project demonstrates web scraping automation, mixed-quality-source verification, and AI-assisted workflow execution using Claude Code.
 
 ## How it works
 
-This follows the **WAT framework** (Workflows, Agents, Tools) — see [WAT Claude.md](WAT%20Claude.md):
+Each issue starts from a single topic or tag and moves through the same repeatable flow:
 
-- **Workflows** are plain-language SOPs the agent reads before acting (this repo: [workflows/source_and_verify_research.md](workflows/source_and_verify_research.md))
-- **Agents** (the LLM) read the workflow, run the right tools in order, and make judgment calls
-- **Tools** here are [Firecrawl](https://firecrawl.dev)'s MCP tools for search, mapping, and scraping — see the full breakdown in [firecrawl-cheatsheet.md](firecrawl-cheatsheet.md)
+- **Search** — Medium is searched/mapped for the week's topic or tag, surfacing candidate articles
+- **Filter** — candidates are skimmed for tone and quality; video-only and paywalled sources (Medium exclusions, plus sites like Psyche, Aeon, HBR) are dropped
+- **Scrape** — the selected article(s) are scraped for full, clean text
+- **Verify** — every specific statistic, study name, or named researcher pulled from the text is independently confirmed against the original source or a fresh search — never taken on the article's word
+- **Classify** — each point is tagged **verified** (safe to cite), **softened** (rewritten without false precision), or **dropped** (couldn't be confirmed, discarded)
 
-[CLAUDE.md](CLAUDE.md) is the project brief the agent reads on every run: what this project is for, which sources to avoid (paywalled sites, video-only pages), and the mandatory verification step.
+## How to use
 
-## The verification gate
+No install step — this runs on [Firecrawl's](https://firecrawl.dev) MCP tools inside Claude Code, not a local Python environment.
 
-Any specific statistic, study name, or named researcher pulled from a Medium article must be independently confirmed before use — either by web-searching the study/author to confirm it says what the article claims, or by tracing back to the original source directly.
+Give Claude a topic and ask it to source research for the newsletter. It reads [workflows/source_and_verify_research.md](workflows/source_and_verify_research.md) and follows the search → filter → scrape → verify → classify flow automatically, rather than needing the process re-explained each time.
 
-If a claim can't be verified, it's dropped or rewritten without the false precision (e.g. "a 2019 Stanford study found X" → "research suggests X" — only when the softer version is still something the article can stand behind).
+## Files in this repository include
 
-## Files
+**Workflow Documentation** — [workflows/source_and_verify_research.md](workflows/source_and_verify_research.md): the step-by-step SOP covering search, filtering, scraping, and the mandatory verification gate.
 
-| File | Purpose |
-|---|---|
-| [workflows/source_and_verify_research.md](workflows/source_and_verify_research.md) | The step-by-step SOP: search → filter → scrape → verify → classify |
-| [firecrawl-cheatsheet.md](firecrawl-cheatsheet.md) | Reference for which Firecrawl tool to use for discovery vs. scraping, and which sources to skip |
-| [CLAUDE.md](CLAUDE.md) | Project brief and the mandatory verification rule |
-| [WAT Claude.md](WAT%20Claude.md) | The general Workflows/Agents/Tools framework this project runs on |
-| [results/medium_content_dossier.html](results/medium_content_dossier.html) / [.pdf](results/medium_content_dossier.pdf) | A visual walkthrough of one real run: screenshots of the pages the workflow touches (homepage, topic hub, article), Medium's colour/type system, a map of its site structure, and the actual sourcing output below |
-| [results/medium_top_performing_content.xlsx](results/medium_top_performing_content.xlsx) | The raw sourcing-stage output — 30 candidates pulled from a topic hub, ranked by claps, with paywall status and whatever sources each article itself cites. **Not yet independently verified** — that's the next step per the workflow above. |
+**Firecrawl Tool Reference** — [firecrawl-cheatsheet.md](firecrawl-cheatsheet.md): which Firecrawl tool to reach for (search vs. map vs. scrape vs. crawl), and which sources to skip entirely.
+
+**Project Brief** — [CLAUDE.md](CLAUDE.md): what this project is for and the mandatory verification rule every claim has to clear before it's used.
+
+**Framework Doc** — [WAT Claude.md](WAT%20Claude.md): the general Workflows/Agents/Tools framework this project runs on — plain-language SOPs, an agent that executes them, and deterministic tools underneath.
+
+**Sourcing Dossier & Sample Output** — [results/medium_content_dossier.html](results/medium_content_dossier.html) / [.pdf](results/medium_content_dossier.pdf): a visual walkthrough of one real run — screenshots of the pages the workflow touches, Medium's colour/type system, a map of its site structure — plus [results/medium_top_performing_content.xlsx](results/medium_top_performing_content.xlsx), the actual 30-article sourcing-stage result, pending independent verification.
